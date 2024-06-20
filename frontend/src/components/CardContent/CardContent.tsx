@@ -4,9 +4,9 @@ import FavoriteButton from "../FavoriteButton/FavoriteButton";
 import { Place } from "../../layouts/home/reducer/placesSlice";
 import renderStars from "../../utils/startsHelper";
 
-type PlaceObj = Place
+type PlaceObj = Place;
 
-function CardContent({ place }: {place: PlaceObj}) {
+function CardContent({ place }: { place: PlaceObj }) {
   const [isFavorite, setIsFavorite] = useState(true);
   const [average, setAverage] = useState(4.5);
   useEffect(() => {
@@ -14,15 +14,14 @@ function CardContent({ place }: {place: PlaceObj}) {
       return;
     }
     const rating =
-    place.reviews.reduce((a, b) => {
-      return a + b.rating;
-    }, 0) / place.reviews.length || 1;
-    setAverage(rating)
-  }, [place.reviews])
+      place.reviews.reduce((a, b) => {
+        return a + b.rating;
+      }, 0) / place.reviews.length || 1;
+    setAverage(rating);
+  }, [place.reviews]);
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
   };
-  
 
   return (
     <div className="card card-compact w-full bg-green-600 shadow-xl mt-3 md:h-96 h-[23rem] mx-1">
@@ -34,7 +33,7 @@ function CardContent({ place }: {place: PlaceObj}) {
         />
         <FavoriteButton isFavorite={isFavorite} onClick={toggleFavorite} />
       </figure>
-      <div className="card-body h-16">
+      <div className="card-body h-16 mx-auto">
         <h2 className="card-title text-green-50 md:text-xl sm:text-lg text-base">
           {place.name}
         </h2>
@@ -47,12 +46,14 @@ function CardContent({ place }: {place: PlaceObj}) {
 
       <div className="p-4">
         <div className="card-actions">
-          <div className="flex flex-row items-center sm:text-base text-sm">
+          <div className="flex flex-row items-center mx-auto sm:text-base text-sm">
             {renderStars(average)}
-            <span className="ml-1"><b>{average}</b></span>
+            <span className="ml-1 text-white">
+              <b>{average.toFixed(1)}</b>
+            </span>
           </div>
         </div>
-        <p className="text-white pb-1 md:text-lg text-sm">
+        <p className="text-white pb-1 md:text-md text-sm">
           Desde <strong className="text-green-100">$1000</strong> por adulto
         </p>
         <div className="card-actions">

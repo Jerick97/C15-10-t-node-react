@@ -3,13 +3,17 @@ import AutoComplete from "../../../../components/Nav/components/AutoComplete/Aut
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store/store";
-import { Place } from "../../../home/reducer/placesSlice";
-import { setPlace } from "../../../home/reducer/placesSlice";
+import { Place, setPlace } from "../../../home/reducer/placesSlice";
 
 interface Props {
   setSimilarPlaces: React.Dispatch<React.SetStateAction<Place[]>>;
   q?: string | null;
 }
+interface HistoryEntry {
+  q: string;
+  time: number;
+}
+
 export default function SearchInput({ setSimilarPlaces, q }: Props) {
   const placeData = useSelector((state: RootState) => state.places.places);
   const singlePlace = useSelector((state: RootState) => state.places.place);
@@ -84,13 +88,25 @@ export default function SearchInput({ setSimilarPlaces, q }: Props) {
     } else {
       setQuery(q);
       searchSpots(q);
-      localStorage.setItem(
-        "history",
-        JSON.stringify([
-          { q: q, time: new Date().getTime() },
-          ...JSON.parse(localStorage.getItem("history") ?? "[]"),
-        ])
+      // Obtener el historial existente del localStorage
+      const existingHistory = JSON.parse(
+        localStorage.getItem("history") ?? "[]"
       );
+
+      // Verificar si ya existe una entrada con el mismo término de búsqueda
+      const isDuplicate = existingHistory.some(
+        (entry: HistoryEntry) => entry.q.toLowerCase() === q.toLowerCase()
+      );
+
+      if (!isDuplicate) {
+        // Agregar una nueva entrada al historial con la hora actual
+        const updatedHistory = [
+          { q: q, time: new Date().getTime() },
+          ...existingHistory,
+        ];
+
+        localStorage.setItem("history", JSON.stringify(updatedHistory));
+      }
     }
   }, [q, query, placeData, searchSpots]);
 

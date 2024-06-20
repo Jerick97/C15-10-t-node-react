@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { clearToken } from "../../layouts/auth/reducers/authSlice";
 
-
 function Navbar() {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -35,7 +34,7 @@ function Navbar() {
   };
 
   return (
-    <div className="fixed w-full z-50">
+    <div className="fixed w-full" style={{ zIndex: "999" }}>
       <div>
         <div className="flex flex-row justify-between px-7 py-4 md:py-4 mb-15 text-black font-bold bg-green-600 shadow-[0_3px_10px_rgba(0,0,0,0.2)]">
           <div className="cursor-pointer">
@@ -129,8 +128,9 @@ function Navbar() {
             onClick={closeMenu}
           >
             <div
-              className={`${menu ? "translate-x-0" : "-translate-x-full"
-                } lg:hidden fixed top-0 left-0 z-40 h-screen py-10 px-7 overflow-y-auto transition-transform -translate-x-full bg-white w-72 sm:w-96 flex items-center flex-col`}
+              className={`${
+                menu ? "translate-x-0" : "-translate-x-full"
+              } lg:hidden fixed top-0 left-0 z-40 h-screen py-10 px-7 overflow-y-auto transition-transform -translate-x-full bg-white w-72 sm:w-96 flex items-center flex-col`}
               tabIndex={-1}
               aria-labelledby="drawer-left-label"
             >
